@@ -34,6 +34,7 @@ adc:
   readInterval: 500       # milliseconds
   voltageTolerance: 0.01  # voltage change before publishing
   analogInputs: [1, 2, 3, 4, 5, 6, 7, 8]
+  scaleMinMax: [0, 4096]  # published value min/max boundaries
   voltageMinMax:
     1: [0.00, 5.00]
     2: [0.00, 5.00]

@@ -10,6 +10,7 @@ const {
   analogInputs,
   readInterval,
   voltageTolerance,
+  scaleMinMax,
   voltageMinMax
 } = config.get('adc');
 const logging = config.get('logging');
@@ -34,12 +35,11 @@ function readInputs() {
 
   analogInputs.forEach(input => {
     let voltage = round(adc.readVoltage(input));
-    let minMax = voltageMinMax[input];
-    let toPercentage = linearScale(minMax, [0, 100], true);
-    let value = Math.round(toPercentage(voltage));
+    let scale = linearScale(voltageMinMax[input], scaleMinMax, true);
+    let scaledValue = Math.round(scale(voltage));
 
     if (aboveTolerance(input, voltage)) {
-      mqtt.publish(`${topic}/${input}`, JSON.stringify(value), {
+      mqtt.publish(`${topic}/${input}`, JSON.stringify(scaledValue), {
         qos: 0,
         retain: false
       });
@@ -47,7 +47,7 @@ function readInputs() {
     prevVoltage[input] = voltage;
 
     if (logging.enabled) {
-      console.log(`Input ${input}: ${value}% (${voltage}V)`);
+      console.log(`Input ${input}: ${scaledValue}% (${voltage}V)`);
     }
   });
 }
