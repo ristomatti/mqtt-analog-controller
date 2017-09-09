@@ -19,11 +19,12 @@ const mqtt = mqttjs.connect(url, clientOptions);
 
 const prevVoltage = {};
 
-mqtt.on('connect', () => {
-  mqtt.publish(status.topic, status.payload, status.options);
+console.log('MQTT connecting...');
 
+mqtt.on('connect', () => {
+  console.log('MQTT connected');
+  mqtt.publish(status.topic, status.payload, status.options);
   setInterval(readInputs, readInterval);
-  readInputs();
 });
 
 function readInputs() {
