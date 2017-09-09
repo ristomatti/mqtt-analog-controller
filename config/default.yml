@@ -10,9 +10,9 @@ mqtt:
     username:
     password:
     will:
-      topic: analog-ctrl/status,
-      payload: offline,
-      qos: 1,
+      topic: analog-ctrl/status
+      payload: offline
+      qos: 1
       retain: true
 
   # MQTT topics to publish analog input values
