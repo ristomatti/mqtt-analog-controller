@@ -2,7 +2,6 @@ const config = require('config');
 const mqttjs = require('mqtt');
 const linearScale = require('simple-linear-scale');
 const { ADCPi } = require('abelectronics');
-const { log } = console;
 
 const analogInputs = [1, 2, 3, 4, 5, 6, 7, 8];
 const interval = 1000; // ms
@@ -35,6 +34,7 @@ mqtt.on('connect', () => {
 });
 
 function readInputs() {
+  resetConsole();
   analogInputs.forEach(input => {
     let voltage = round(adc.readVoltage(input));
     let maxVoltage = maxVoltages[input];
@@ -46,12 +46,15 @@ function readInputs() {
       retain: false
     });
 
-    log(`Input ${input}: ${value}% (${voltage}V)`);
+    console.log(`Input ${input}: ${value}% (${voltage}V)`);
   });
-
-  log();
+  console.log();
 }
 
 function round(voltage) {
   return Math.round(voltage * 1000) / 1000;
+}
+
+function resetConsole() {
+  process.stdout.write('\033c');
 }
