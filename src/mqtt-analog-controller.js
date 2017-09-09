@@ -9,7 +9,7 @@ const {
   bitRate,
   analogInputs,
   readInterval,
-  tolerance,
+  voltageTolerance,
   voltageMinMax
 } = config.get('adc');
 const logging = config.get('logging');
@@ -53,7 +53,7 @@ function readInputs() {
 }
 
 function aboveTolerance(input, voltage) {
-  return !approxEq(voltage, prevVoltage[input], tolerance);
+  return !approxEq(voltage, prevVoltage[input], voltageTolerance);
 }
 
 function round(voltage) {
