@@ -2,6 +2,7 @@ const config = require('config');
 const mqttjs = require('mqtt');
 const linearScale = require('simple-linear-scale');
 const approxEq = require('approximately-equal');
+const deepEqual = require('deep-equal');
 const { ADCPi } = require('abelectronics');
 
 const { url, clientOptions, topic, status } = config.get('mqtt');
@@ -18,7 +19,8 @@ const logging = config.get('logging');
 const adc = new ADCPi(0x68, 0x69, bitRate);
 const mqtt = mqttjs.connect(url, clientOptions);
 
-const prevValue = {};
+const scaledValues = {};
+let prevReadings = {};
 
 console.log('MQTT connecting...');
 
@@ -29,8 +31,6 @@ mqtt.on('connect', () => {
 });
 
 function readInputs() {
-  if (logging.enabled && logging.reset) { resetConsole(); }
-
   let readings = {};
   analogInputs.forEach(input => {
     let voltage = round(adc.readVoltage(input));
@@ -44,14 +44,18 @@ function readInputs() {
         retain: false
       });
     }
-    prevValue[input] = scaledValue;
+    scaledValues[input] = scaledValue;
   });
 
-  if (logging.enabled) { console.log(readings); }
+  if (logging.enabled && !deepEqual(prevReadings, readings)) {
+    if (logging.reset) { resetConsole(); }
+    console.log(readings);
+  }
+  prevReadings = readings;
 }
 
-function aboveTolerance(input, value) {
-  return !approxEq(value, prevValue[input], publishTolerance);
+function aboveTolerance(input, scaledValue) {
+  return !approxEq(scaledValue, scaledValues[input], publishTolerance);
 }
 
 function round(voltage) {

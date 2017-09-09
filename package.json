@@ -13,6 +13,7 @@
     "abelectronics": "github:ristomatti/ABElectronics_NodeJS_Libraries#npm",
     "approximately-equal": "^0.1.8",
     "config": "^1.26.2",
+    "deep-equal": "^1.0.1",
     "js-yaml": "^3.9.1",
     "lodash": "^4.17.4",
     "mqtt": "^2.12.1",
