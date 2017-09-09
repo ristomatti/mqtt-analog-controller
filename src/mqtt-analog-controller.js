@@ -4,10 +4,16 @@ const linearScale = require('simple-linear-scale');
 const approxEq = require('approximately-equal');
 const { ADCPi } = require('abelectronics');
 
-const { analogInputs, readInterval, tolerance, voltageMinMax } = config.get('adc');
 const { url, clientOptions, topic, status } = config.get('mqtt');
+const {
+  bitRate,
+  analogInputs,
+  readInterval,
+  tolerance,
+  voltageMinMax
+} = config.get('adc');
 
-const adc = new ADCPi(0x68, 0x69, 16);
+const adc = new ADCPi(0x68, 0x69, bitRate);
 const mqtt = mqttjs.connect(url, clientOptions);
 
 const prevVoltage = {};

@@ -30,9 +30,10 @@ mqtt:
 
 # Analog input settings
 adc:
-  analogInputs: [1, 2, 3, 4, 5, 6, 7, 8]
-  readInterval: 500 # milliseconds
+  bitRate: 12
+  readInterval: 500      # milliseconds
   voltageTolerance: 0.01 # voltage change before publish
+  analogInputs: [1, 2, 3, 4, 5, 6, 7, 8]
   voltageMinMax:
     1: [0.00, 5.00]
     2: [0.00, 5.00]
