@@ -47,7 +47,7 @@ function readInputs() {
     prevValue[input] = scaledValue;
 
     if (logging.enabled) {
-      console.log(`Input ${input}: ${scaledValue}% (${voltage}V)`);
+      console.log(`Input ${input}: ${scaledValue} (${voltage}V)`);
     }
   });
 }
