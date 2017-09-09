@@ -14,7 +14,6 @@
     "config": "^1.26.2",
     "js-yaml": "^3.9.1",
     "lodash": "^4.17.4",
-    "moment": "^2.18.1",
     "mqtt": "^2.12.1",
     "rpio": "^0.9.17",
     "simple-linear-scale": "^1.0.1"

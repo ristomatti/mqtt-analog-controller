@@ -1,7 +1,6 @@
 const config = require('config');
 const mqttjs = require('mqtt');
 const linearScale = require('simple-linear-scale');
-const moment = require('moment');
 const { ADCPi } = require('abelectronics');
 const { log } = console;
 
@@ -36,7 +35,6 @@ mqtt.on('connect', () => {
 });
 
 function readInputs() {
-  log(moment().locale('en-gb').format('llll'));
   analogInputs.forEach(input => {
     let voltage = round(adc.readVoltage(input));
     let maxVoltage = maxVoltages[input];
