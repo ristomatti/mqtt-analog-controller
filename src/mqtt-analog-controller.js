@@ -9,7 +9,7 @@ const {
   bitRate,
   analogInputs,
   readInterval,
-  voltageTolerance,
+  publishTolerance,
   scaleMinMax,
   voltageMinMax
 } = config.get('adc');
@@ -18,7 +18,7 @@ const logging = config.get('logging');
 const adc = new ADCPi(0x68, 0x69, bitRate);
 const mqtt = mqttjs.connect(url, clientOptions);
 
-const prevVoltage = {};
+const prevValue = {};
 
 console.log('MQTT connecting...');
 
@@ -38,13 +38,13 @@ function readInputs() {
     let scale = linearScale(voltageMinMax[input], scaleMinMax, true);
     let scaledValue = Math.round(scale(voltage));
 
-    if (aboveTolerance(input, voltage)) {
+    if (aboveTolerance(input, scaledValue)) {
       mqtt.publish(`${topic}/${input}`, JSON.stringify(scaledValue), {
         qos: 0,
         retain: false
       });
     }
-    prevVoltage[input] = voltage;
+    prevValue[input] = scaledValue;
 
     if (logging.enabled) {
       console.log(`Input ${input}: ${scaledValue}% (${voltage}V)`);
@@ -52,8 +52,8 @@ function readInputs() {
   });
 }
 
-function aboveTolerance(input, voltage) {
-  return !approxEq(voltage, prevVoltage[input], voltageTolerance);
+function aboveTolerance(input, value) {
+  return !approxEq(value, prevValue[input], publishTolerance);
 }
 
 function round(voltage) {
