@@ -1,0 +1,21 @@
+{
+  "name": "mqtt-analog-controller",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/mqtt-analog-controller.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/mqtt-analog-controller.js"
+  },
+  "author": "Ristomatti Airo <ristomatti@kallio.io>",
+  "license": "MIT",
+  "dependencies": {
+    "abelectronics": "github:ristomatti/ABElectronics_NodeJS_Libraries#npm",
+    "config": "^1.26.2",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "mqtt": "^2.12.1",
+    "rpio": "^0.9.17",
+    "simple-linear-scale": "^1.0.1"
+  }
+}

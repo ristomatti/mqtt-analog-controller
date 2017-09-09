@@ -1,0 +1,21 @@
+#
+# Default configuration settings. Settings can be changed here or by overriding
+# the values in local.yml defined in the same directory.
+#
+mqtt:
+  url: mqtt://test.mosquitto.org:1883
+
+  # MQTT.js client options (https://github.com/mqttjs/MQTT.js#client)
+  options:
+    username:
+    password:
+    will:
+      topic: analog-ctrl/status,
+      payload: offline,
+      qos: 1,
+      retain: true
+
+  # MQTT topics to publish analog input values
+  topic:
+    root: analog-ctrl
+    status: analog-ctrl/status
