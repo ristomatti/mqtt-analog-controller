@@ -43,3 +43,7 @@ adc:
     6: [0.00, 5.00]
     7: [0.00, 5.00]
     8: [0.00, 5.00]
+
+logging:
+  enabled: true  # log voltages to console
+  reset: true    # reset console between readings

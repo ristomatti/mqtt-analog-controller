@@ -12,6 +12,7 @@ const {
   tolerance,
   voltageMinMax
 } = config.get('adc');
+const logging = config.get('logging');
 
 const adc = new ADCPi(0x68, 0x69, bitRate);
 const mqtt = mqttjs.connect(url, clientOptions);
@@ -26,15 +27,15 @@ mqtt.on('connect', () => {
 });
 
 function readInputs() {
-  resetConsole();
+  if (logging.enabled && logging.reset) {
+    resetConsole();
+  }
 
   analogInputs.forEach(input => {
     let voltage = round(adc.readVoltage(input));
     let minMax = voltageMinMax[input];
     let toPercentage = linearScale(minMax, [0, 100], true);
     let value = Math.round(toPercentage(voltage));
-
-    console.log(`Input ${input}: ${value}% (${voltage}V)`);
 
     if (aboveTolerance(input, voltage)) {
       mqtt.publish(`${topic}/${input}`, JSON.stringify(value), {
@@ -43,6 +44,10 @@ function readInputs() {
       });
     }
     prevVoltage[input] = voltage;
+
+    if (logging.enabled) {
+      console.log(`Input ${input}: ${value}% (${voltage}V)`);
+    }
   });
 }
 
