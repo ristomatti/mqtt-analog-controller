@@ -2,11 +2,13 @@
 # Default configuration settings. Settings can be changed here or by overriding
 # the values in local.yml defined in the same directory.
 #
+
+# MQTT settings
 mqtt:
   url: mqtt://test.mosquitto.org:1883
 
   # MQTT.js client options (https://github.com/mqttjs/MQTT.js#client)
-  options:
+  clientOptions:
     username:
     password:
     will:
@@ -16,6 +18,27 @@ mqtt:
       retain: true
 
   # MQTT topics to publish analog input values
-  topic:
-    root: analog-ctrl
-    status: analog-ctrl/status
+  topic:  analog-ctrl
+
+  # MQTT online status settings
+  status:
+    topic: analog-ctrl/status
+    payload: online
+    options:
+      qos: 1
+      retain: true
+
+# Analog input settings
+adc:
+  analogInputs: [1, 2, 3, 4, 5, 6, 7, 8]
+  readInterval: 500 # milliseconds
+  voltageTolerance: 0.01 # voltage change before publish
+  voltageMinMax:
+    1: [0.00, 5.00]
+    2: [0.00, 5.00]
+    3: [0.00, 5.00]
+    4: [0.00, 5.00]
+    5: [0.00, 5.00]
+    6: [0.00, 5.00]
+    7: [0.00, 5.00]
+    8: [0.00, 5.00]
