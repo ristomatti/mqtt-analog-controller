@@ -29,14 +29,14 @@ mqtt.on('connect', () => {
 });
 
 function readInputs() {
-  if (logging.enabled && logging.reset) {
-    resetConsole();
-  }
+  if (logging.enabled && logging.reset) { resetConsole(); }
 
+  let readings = {};
   analogInputs.forEach(input => {
     let voltage = round(adc.readVoltage(input));
     let scale = linearScale(voltageMinMax[input], scaleMinMax, true);
     let scaledValue = Math.round(scale(voltage));
+    readings[input] = { voltage, scaled: scaledValue };
 
     if (aboveTolerance(input, scaledValue)) {
       mqtt.publish(`${topic}/${input}`, JSON.stringify(scaledValue), {
@@ -45,11 +45,9 @@ function readInputs() {
       });
     }
     prevValue[input] = scaledValue;
-
-    if (logging.enabled) {
-      console.log(`Input ${input}: ${scaledValue} (${voltage}V)`);
-    }
   });
+
+  if (logging.enabled) { console.log(readings); }
 }
 
 function aboveTolerance(input, value) {
